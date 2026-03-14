@@ -1,118 +1,30 @@
 name: customers
 table: customers_table
-description: "Customer information and demographics"
+description: "Customer information"
 
 dimensions:
   - name: id
     type: string
     sql: customer_id
     description: "Unique customer identifier"
-    primary_key: true
-
-  - name: full_name
-    type: string
-    sql: CONCAT(first_name, ' ', last_name)
-    description: "Customer full name"
-
-  - name: first_name
-    type: string
-    sql: first_name
-    description: "Customer first name"
-
-  - name: last_name
-    type: string
-    sql: last_name
-    description: "Customer last name"
-
-  - name: email
-    type: string
-    sql: email_address
-    description: "Customer email address"
-
+  
   - name: country
     type: string
-    sql: country_code
-    description: "Customer country (ISO code)"
-
+    sql: country
+    description: "Customer country"
+  
   - name: city
     type: string
-    sql: city_name
+    sql: city
     description: "Customer city"
 
-  - name: registration_date
-    type: time
-    sql: signup_date
-    description: "Date customer registered"
-    granularities: [day, week, month, quarter, year]
-
-  - name: customer_tier
-    type: string
-    sql: loyalty_tier
-    description: "Customer loyalty tier"
-    allowed_values: ["bronze", "silver", "gold", "platinum"]
-
-  - name: age_group
-    type: string
-    sql: |
-      CASE 
-        WHEN age < 25 THEN '18-24'
-        WHEN age < 35 THEN '25-34'
-        WHEN age < 50 THEN '35-49'
-        ELSE '50+'
-      END
-    description: "Customer age bracket"
-
-  - name: is_active
-    type: boolean
-    sql: account_status = 'active'
-    description: "Whether customer has active account"
-
 metrics:
-  - name: customer_lifetime_value
-    type: number
-    sql: "SUM(total_spent)"
-    description: "Total amount spent by customer"
-    format: currency
-
-  - name: customer_ltv_avg
-    type: number
-    sql: "AVG(total_spent)"
-    description: "Average customer lifetime value"
-    format: currency
-
   - name: customer_count
     type: number
-    sql: "COUNT(DISTINCT customer_id)"
+    sql: COUNT(DISTINCT customer_id)
     description: "Number of unique customers"
-
-  - name: repeat_customer_rate
+  
+  - name: lifetime_value
     type: number
-    sql: |
-      COUNT(DISTINCT CASE WHEN order_count > 1 THEN customer_id END) * 1.0 / 
-      COUNT(DISTINCT customer_id)
-    description: "Percentage of customers with multiple orders"
-
-  - name: average_orders_per_customer
-    type: number
-    sql: "AVG(order_count)"
-    description: "Average number of orders per customer"
-
-segments:
-  - name: active_customers
-    sql: "account_status = 'active'"
-    description: "Customers with active accounts"
-
-  - name: high_value_customers
-    sql: "total_spent > 5000"
-    description: "Customers who spent over $5000"
-
-  - name: new_customers
-    sql: "signup_date >= CURRENT_DATE - INTERVAL '90 days'"
-    description: "Customers who joined in last 90 days"
-
-relationships:
-  - name: has_many_orders
-    type: has_many
-    foreign_key: customer_id
-    model: orders
-    description: "Customer's order history"
+    sql: SUM(total_spent)
+    description: "Total customer lifetime value"
