@@ -1,103 +1,25 @@
 name: orders
 table: orders_table
-description: "Customer orders and transactions"
+description: "Order transactions"
 
 dimensions:
-  - name: id
-    type: string
-    sql: order_id
-    description: "Unique order identifier"
-    primary_key: true
-
   - name: status
     type: string
-    sql: order_status
-    description: "Order status (pending, completed, cancelled, refunded)"
-    allowed_values: ["pending", "completed", "cancelled", "refunded"]
-
+    sql: status
+    description: "Order status"
+  
   - name: created_at
     type: time
-    sql: order_date
-    description: "Date when order was placed"
-    granularities: [day, week, month, quarter, year]
-
-  - name: completed_at
-    type: time
-    sql: completion_date
-    description: "Date when order was completed"
-    granularities: [day, week, month, quarter, year]
-
-  - name: customer_id
-    type: string
-    sql: customer_id
-    description: "Reference to customer"
-
-  - name: product_id
-    type: string
-    sql: product_id
-    description: "Reference to product"
-
-  - name: payment_method
-    type: string
-    sql: payment_type
-    description: "Method of payment (credit_card, paypal, bank_transfer)"
-    allowed_values: ["credit_card", "paypal", "bank_transfer", "crypto"]
-
-  - name: shipping_region
-    type: string
-    sql: shipping_address_region
-    description: "Geographic region for shipping"
+    sql: created_at
+    description: "Order date"
 
 metrics:
   - name: total_revenue
     type: number
     sql: "SUM(amount)"
-    description: "Total revenue from orders"
-    format: currency
-
+    description: "Total revenue"
+  
   - name: order_count
     type: number
     sql: "COUNT(*)"
     description: "Number of orders"
-
-  - name: average_order_value
-    type: number
-    sql: "AVG(amount)"
-    description: "Average value per order"
-    format: currency
-
-  - name: total_discount
-    type: number
-    sql: "SUM(discount_amount)"
-    description: "Total discounts applied"
-
-  - name: net_revenue
-    type: number
-    sql: "SUM(amount - COALESCE(discount_amount, 0))"
-    description: "Revenue after discounts"
-
-segments:
-  - name: completed_orders
-    sql: "order_status = 'completed'"
-    description: "Only completed orders"
-
-  - name: high_value_orders
-    sql: "amount > 1000"
-    description: "Orders over $1000"
-
-  - name: recent_orders
-    sql: "order_date >= CURRENT_DATE - INTERVAL '30 days'"
-    description: "Orders from last 30 days"
-
-relationships:
-  - name: belongs_to_customer
-    type: belongs_to
-    foreign_key: customer_id
-    model: customers
-    description: "Links order to its customer"
-
-  - name: belongs_to_product
-    type: belongs_to
-    foreign_key: product_id
-    model: products
-    description: "Links order to product purchased"
