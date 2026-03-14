@@ -1,46 +1,18 @@
 models:
   - name: orders
-    table: orders_table
+    table: orders
     primary_key: order_id
-    description: "Order transactions"
-    
     dimensions:
       - name: status
         type: categorical
-        sql: status
-        description: "Order status"
-      
-      - name: created_at
+      - name: order_date
         type: time
-        sql: created_at
         granularity: day
-        description: "Order date"
-      
-      - name: customer_id
+      - name: customer_name
         type: categorical
-        sql: customer_id
-        description: "Customer identifier"
-      
-      - name: product_id
-        type: categorical
-        sql: product_id
-        description: "Product identifier"
-    
     metrics:
-      - name: total_revenue
-        type: number
+      - name: revenue
         agg: sum
         sql: amount
-        description: "Total revenue"
-      
       - name: order_count
-        type: number
         agg: count
-        sql: "*"
-        description: "Number of orders"
-      
-      - name: average_order_value
-        type: number
-        agg: avg
-        sql: amount
-        description: "Average order value"
