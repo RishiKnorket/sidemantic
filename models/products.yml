@@ -1,30 +1,45 @@
-name: products
-table: products_table
-description: "Product catalog"
-
-dimensions:
-  - name: id
-    type: string
-    sql: product_id
-    description: "Unique product identifier"
-  
-  - name: category
-    type: string
-    sql: category
-    description: "Product category"
-  
-  - name: brand
-    type: string
-    sql: brand
-    description: "Product brand"
-
-metrics:
-  - name: total_sold
-    type: number
-    sql: SUM(quantity_sold)
-    description: "Total units sold"
-  
-  - name: revenue
-    type: number
-    sql: SUM(quantity_sold * price)
-    description: "Total revenue from products"
+models:
+  - name: products
+    table: products_table
+    primary_key: product_id
+    description: "Product catalog"
+    
+    dimensions:
+      - name: id
+        type: categorical
+        sql: product_id
+        description: "Product identifier"
+      
+      - name: category
+        type: categorical
+        sql: category
+        description: "Product category"
+      
+      - name: brand
+        type: categorical
+        sql: brand
+        description: "Product brand"
+      
+      - name: price
+        type: number
+        sql: price
+        description: "Product price"
+    
+    metrics:
+      - name: total_sold
+        type: number
+        agg: sum
+        sql: quantity_sold
+        description: "Total units sold"
+      
+      - name: revenue
+        type: number
+        agg: sum
+        sql: quantity_sold * price
+        description: "Product revenue"
+      
+      - name: profit
+        type: number
+        agg: sum
+        sql: quantity_sold * (price - cost)
+        description: "Product profit"
