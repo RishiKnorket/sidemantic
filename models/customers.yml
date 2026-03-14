@@ -1,30 +1,40 @@
-name: customers
-table: customers_table
-description: "Customer information"
-
-dimensions:
-  - name: id
-    type: string
-    sql: customer_id
-    description: "Unique customer identifier"
-  
-  - name: country
-    type: string
-    sql: country
-    description: "Customer country"
-  
-  - name: city
-    type: string
-    sql: city
-    description: "Customer city"
-
-metrics:
-  - name: customer_count
-    type: number
-    sql: COUNT(DISTINCT customer_id)
-    description: "Number of unique customers"
-  
-  - name: lifetime_value
-    type: number
-    sql: SUM(total_spent)
-    description: "Total customer lifetime value"
+models:
+  - name: customers
+    table: customers_table
+    primary_key: customer_id
+    description: "Customer information"
+    
+    dimensions:
+      - name: id
+        type: categorical
+        sql: customer_id
+        description: "Customer identifier"
+      
+      - name: country
+        type: categorical
+        sql: country
+        description: "Customer country"
+      
+      - name: city
+        type: categorical
+        sql: city
+        description: "Customer city"
+      
+      - name: registration_date
+        type: time
+        sql: signup_date
+        granularity: day
+        description: "Registration date"
+    
+    metrics:
+      - name: customer_count
+        type: number
+        agg: count_distinct
+        sql: customer_id
+        description: "Unique customers"
+      
+      - name: lifetime_value
+        type: number
+        agg: sum
+        sql: total_spent
+        description: "Customer lifetime value"
