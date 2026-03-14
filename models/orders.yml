@@ -16,10 +16,10 @@ dimensions:
 metrics:
   - name: total_revenue
     type: number
-    sql: "SUM(amount)"
-    description: "Total revenue"
+    sql: SUM(amount)
+    description: "Total revenue from orders"
   
   - name: order_count
     type: number
-    sql: "COUNT(*)"
+    sql: COUNT(*)
     description: "Number of orders"
