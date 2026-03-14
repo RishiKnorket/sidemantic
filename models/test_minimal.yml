@@ -1,0 +1,12 @@
+name: test
+table: test_table
+
+dimensions:
+  - name: id
+    type: string
+    sql: id
+
+metrics:
+  - name: count
+    type: number
+    sql: COUNT(*)
