@@ -1,0 +1,30 @@
+name: orders
+table: orders_table
+description: "Orders data model"
+
+dimensions:
+  - name: status
+    type: string
+    sql: status
+    description: "Order status"
+
+  - name: created_at
+    type: time
+    sql: created_at
+    granularities: [day, week, month, year]
+
+metrics:
+  - name: total_revenue
+    type: number
+    sql: "SUM(amount)"
+    description: "Total revenue from orders"
+
+  - name: order_count
+    type: number
+    sql: "COUNT(*)"
+
+relationships:
+  - name: customer_orders
+    type: belongs_to
+    foreign_key: customer_id
+    model: customers
