@@ -8,6 +8,7 @@ models:
       - name: order_date
         type: time
         granularity: day
+        description: "Date when order was placed (use for monthly, daily, yearly analysis)"  # ADD THIS
       - name: customer_name
         type: categorical
     metrics:
