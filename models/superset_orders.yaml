@@ -1,0 +1,47 @@
+table_name: orders
+schema: demo
+description: Order transactions
+
+columns:
+  - column_name: order_id
+    type: INT
+    is_dttm: false
+    verbose_name: Order ID
+    
+  - column_name: status
+    type: STRING
+    is_dttm: false
+    verbose_name: Order Status
+    
+  - column_name: order_date
+    type: TIMESTAMP
+    is_dttm: true
+    verbose_name: Order Date
+    
+  - column_name: customer_id
+    type: INT
+    is_dttm: false
+    verbose_name: Customer ID
+    
+  - column_name: amount
+    type: DECIMAL
+    is_dttm: false
+    verbose_name: Amount
+
+metrics:
+  - metric_name: total_revenue
+    expression: SUM(amount)
+    metric_type: sum
+    verbose_name: Total Revenue
+    
+  - metric_name: order_count
+    expression: COUNT(order_id)
+    metric_type: count
+    verbose_name: Order Count
+    
+  - metric_name: avg_order_value
+    expression: AVG(amount)
+    metric_type: avg
+    verbose_name: Average Order Value
+
+main_dttm_col: order_date
