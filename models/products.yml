@@ -2,7 +2,7 @@ models:
   - name: products
     table: products_table
     primary_key: product_id
-    description: "Product catalog with sales metrics"
+    description: "Product catalog"
     
     dimensions:
       - name: product_id
@@ -13,28 +13,12 @@ models:
       - name: category
         type: categorical
         sql: category
-        description: "Product category - electronics, clothing, etc."
+        description: "Product category"
       
       - name: brand
         type: categorical
         sql: brand
-        description: "Product brand name"
-      
-      - name: price
-        type: number
-        sql: price
-        description: "Current product price"
-      
-      - name: cost
-        type: number
-        sql: cost
-        description: "Product cost for profit calculations"
-      
-      - name: created_date
-        type: time
-        sql: created_date
-        granularity: day
-        description: "Date when product was added to catalog"
+        description: "Product brand"
     
     metrics:
       - name: total_sold
@@ -47,16 +31,4 @@ models:
         type: number
         agg: sum
         sql: quantity_sold * price
-        description: "Total revenue from product sales"
-      
-      - name: profit
-        type: number
-        agg: sum
-        sql: quantity_sold * (price - cost)
-        description: "Total profit from product sales"
-      
-      - name: profit_margin
-        type: number
-        agg: avg
-        sql: (price - cost) / price * 100
-        description: "Average profit margin percentage"
+        description: "Product revenue"
