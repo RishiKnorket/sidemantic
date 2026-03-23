@@ -1,0 +1,18 @@
+models:
+  - name: customers
+    table: customers
+    description: Customer information
+    dimensions:
+      - name: customer_id
+        type: number
+        primary_key: true
+      - name: name
+        type: string
+      - name: email
+        type: string
+      - name: country
+        type: string
+    metrics:
+      - name: customer_count
+        agg: count_distinct
+        sql: customer_id
