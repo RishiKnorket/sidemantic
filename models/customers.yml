@@ -2,10 +2,10 @@ models:
   - name: customers
     table: customers_table
     primary_key: customer_id
-    description: "Customer information with demographics and lifetime value"
+    description: "Customer information"
     
     dimensions:
-      - name: id
+      - name: customer_id
         type: categorical
         sql: customer_id
         description: "Unique customer identifier"
@@ -13,28 +13,23 @@ models:
       - name: country
         type: categorical
         sql: country
-        description: "Customer country for geographic analysis"
+        description: "Customer country"
       
       - name: city
         type: categorical
         sql: city
-        description: "Customer city for geographic analysis"
+        description: "Customer city"
+      
+      - name: customer_tier
+        type: categorical
+        sql: tier
+        description: "Customer segment"
       
       - name: registration_date
         type: time
         sql: signup_date
         granularity: day
-        description: "Date when customer registered - use for monthly signups, cohort analysis"
-      
-      - name: customer_tier
-        type: categorical
-        sql: tier
-        description: "Customer segment - bronze, silver, gold, platinum"
-      
-      - name: total_spent
-        type: number
-        sql: total_spent
-        description: "Total amount spent by customer"
+        description: "Date when customer registered"
     
     metrics:
       - name: customer_count
@@ -47,10 +42,9 @@ models:
         type: number
         agg: sum
         sql: total_spent
-        description: "Total customer lifetime value"
-      
-      - name: average_ltv
-        type: number
-        agg: avg
-        sql: total_spent
-        description: "Average lifetime value per customer"
+        description: "Customer lifetime value"
+    
+    relationships:
+      - to: orders
+        from_field: customer_id
+        to_field: customer_id
