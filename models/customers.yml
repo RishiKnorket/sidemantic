@@ -24,12 +24,12 @@ models:
         type: time
         sql: signup_date
         granularity: day
-        description: "Date when customer registered - use for monthly signups, cohort analysis, time trends"
+        description: "Date when customer registered - use for monthly signups, cohort analysis"
       
       - name: customer_tier
         type: categorical
         sql: tier
-        description: "Customer segment (bronze, silver, gold, platinum)"
+        description: "Customer segment - bronze, silver, gold, platinum"
       
       - name: total_spent
         type: number
@@ -47,9 +47,9 @@ models:
         type: number
         agg: sum
         sql: total_spent
-        description: "Sum of total spent by customers (LTV)"
+        description: "Total customer lifetime value"
       
-      - name: average_customer_ltv
+      - name: average_ltv
         type: number
         agg: avg
         sql: total_spent
