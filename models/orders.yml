@@ -1,37 +1,42 @@
 models:
   - name: orders
-    table: orders
+    table: orders_table
     primary_key: order_id
     description: "Order transactions with revenue and status"
     
     dimensions:
+      - name: order_id
+        type: categorical
+        sql: order_id
+        description: "Unique order identifier"
+      
       - name: status
         type: categorical
         sql: status
-        description: "Order status (completed, pending, cancelled)"
+        description: "Order status - completed, pending, cancelled"
       
       - name: order_date
         type: time
         sql: order_date
         granularity: day
-        description: "Date when order was placed - use for daily, weekly, monthly, quarterly, yearly analysis"
+        description: "Date when order was placed - use for daily, weekly, monthly analysis"
       
       - name: customer_name
         type: categorical
         sql: customer_name
         description: "Name of customer who placed the order"
       
-      - name: order_id
+      - name: customer_id
         type: categorical
-        sql: order_id
-        description: "Unique order identifier"
+        sql: customer_id
+        description: "Reference to customer"
     
     metrics:
       - name: revenue
         type: number
         agg: sum
         sql: amount
-        description: "Total revenue from orders (sum of amount)"
+        description: "Total revenue from orders"
       
       - name: order_count
         type: number
@@ -44,3 +49,8 @@ models:
         agg: avg
         sql: amount
         description: "Average value per order"
+    
+    relationships:
+      - to: customers
+        from_field: customer_id
+        to_field: customer_id
