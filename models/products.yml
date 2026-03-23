@@ -5,7 +5,7 @@ models:
     description: "Product catalog with sales metrics"
     
     dimensions:
-      - name: id
+      - name: product_id
         type: categorical
         sql: product_id
         description: "Unique product identifier"
@@ -13,7 +13,7 @@ models:
       - name: category
         type: categorical
         sql: category
-        description: "Product category (electronics, clothing, etc.)"
+        description: "Product category - electronics, clothing, etc."
       
       - name: brand
         type: categorical
@@ -60,9 +60,3 @@ models:
         agg: avg
         sql: (price - cost) / price * 100
         description: "Average profit margin percentage"
-      
-      - name: unique_products_sold
-        type: number
-        agg: count_distinct
-        sql: product_id
-        description: "Count of distinct products sold"
