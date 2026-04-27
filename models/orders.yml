@@ -1,0 +1,45 @@
+models:
+  - name: orders
+    table: orders_table
+    primary_key: order_id
+    description: "Orders table"
+    
+    dimensions:
+      - name: order_id
+        type: number
+        sql: order_id
+        description: "Unique order ID"
+      
+      - name: order_date
+        type: time
+        sql: order_date
+        granularity: day
+        description: "Date of order"
+      
+      - name: status
+        type: categorical
+        sql: status
+        description: "Order status"
+      
+      - name: customer_id
+        type: number
+        sql: customer_id
+        description: "Customer ID"
+    
+    metrics:
+      - name: total_revenue
+        type: number
+        agg: sum
+        sql: quantity * price
+        description: "Total revenue from orders"
+      
+      - name: order_count
+        type: number
+        agg: count
+        sql: order_id
+        description: "Number of orders"
+    
+    relationships:
+      - to: customers
+        from_field: customer_id
+        to_field: customer_id
