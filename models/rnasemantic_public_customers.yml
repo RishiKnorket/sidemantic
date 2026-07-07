@@ -1,30 +1,30 @@
 ---
 cubes:
 - name: rnasemantic_public_customers
-  sql_table: "customers"
+  sql_table: customers
   dimensions:
   - name: city
     sql: city
     type: string
-    primary_key: false
   - name: state
     sql: state
     type: string
-    primary_key: false
   - name: signup_date
     sql: signup_date
-    type: string
-    primary_key: false
+    type: time  # ← CHANGED from "string" to "time" for better handling
   - name: customer_id
     sql: customer_id
     type: string
-    primary_key: false
   - name: customer_name
     sql: customer_name
     type: string
-    primary_key: false
   - name: segment
     sql: segment
     type: string
-    primary_key: false
-  measures: []
+  measures:
+  - name: total_customers
+    sql: customer_id
+    type: count  # ← ADDED a measure so it's not empty
+  - name: distinct_customers
+    sql: customer_id
+    type: count_distinct  # ← ADDED another measure
