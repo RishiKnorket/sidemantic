@@ -1,8 +1,7 @@
 models:
   - name: customers
     table: customers
-    description: Customer information
-    primary_key: customer_id  
+    primary_key: customer_id
     dimensions:
       - name: customer_id
         type: number
