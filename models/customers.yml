@@ -1,8 +1,15 @@
 models:
-  - name: orders
-    table: orders
-    primary_key: id
+  - name: customers
+    table: customers
+    primary_key: customer_id
+    dimensions:
+      - name: customer_id
+        type: numeric
+      - name: name
+        type: categorical
+      - name: email
+        type: categorical
     metrics:
-      - name: revenue
-        agg: sum
-        sql: amount
+      - name: customer_count
+        agg: count
+        sql: customer_id
