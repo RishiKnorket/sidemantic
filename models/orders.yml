@@ -28,18 +28,16 @@ models:
     
     metrics:
       - name: total_revenue
-        type: number
-        agg: sum
+        agg: sum  # ← REMOVED "type: number" (not needed)
         sql: quantity * price
         description: "Total revenue from orders"
       
       - name: order_count
-        type: number
-        agg: count
+        agg: count  # ← REMOVED "type: number" (not needed)
         sql: order_id
         description: "Number of orders"
     
-    relationships:
-      - to: customers
-        from_field: customer_id
-        to_field: customer_id
+    joins:  # ← CHANGED from "relationships" to "joins"
+      - name: customers
+        sql: orders.customer_id = customers.customer_id
+        relationship: many_to_one
