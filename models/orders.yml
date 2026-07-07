@@ -2,16 +2,21 @@ models:
   - name: orders
     table: orders_table
     primary_key: order_id
+    description: "Orders table"
     dimensions:
       - name: order_id
-        type: number
+        type: numeric
+        sql: order_id
       - name: order_date
         type: time
+        sql: order_date
         granularity: day
       - name: status
         type: categorical
+        sql: status
       - name: customer_id
-        type: number
+        type: numeric
+        sql: customer_id
     metrics:
       - name: total_revenue
         agg: sum
