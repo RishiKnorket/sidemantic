@@ -1,0 +1,22 @@
+models:
+  - name: customers
+    table: customers
+    primary_key: customer_id
+    description: "Customer information"
+    dimensions:
+      - name: customer_id
+        type: numeric
+        sql: customer_id
+      - name: name
+        type: categorical
+        sql: name
+      - name: email
+        type: categorical
+        sql: email
+      - name: country
+        type: categorical
+        sql: country
+    metrics:
+      - name: customer_count
+        agg: count_distinct
+        sql: customer_id
