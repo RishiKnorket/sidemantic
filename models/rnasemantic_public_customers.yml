@@ -1,0 +1,30 @@
+---
+cubes:
+- name: rnasemantic_public_customers
+  sql_table: "customers"
+  dimensions:
+  - name: city
+    sql: city
+    type: string
+    primary_key: false
+  - name: state
+    sql: state
+    type: string
+    primary_key: false
+  - name: signup_date
+    sql: signup_date
+    type: string
+    primary_key: false
+  - name: customer_id
+    sql: customer_id
+    type: string
+    primary_key: false
+  - name: customer_name
+    sql: customer_name
+    type: string
+    primary_key: false
+  - name: segment
+    sql: segment
+    type: string
+    primary_key: false
+  measures: []
