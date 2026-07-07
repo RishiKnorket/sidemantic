@@ -5,10 +5,13 @@ models:
     dimensions:
       - name: customer_id
         type: numeric
+        sql: customer_id
       - name: name
         type: categorical
+        sql: name
       - name: email
         type: categorical
+        sql: email
     metrics:
       - name: customer_count
         agg: count
