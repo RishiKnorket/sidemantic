@@ -2,42 +2,24 @@ models:
   - name: orders
     table: orders_table
     primary_key: order_id
-    description: "Orders table"
-    
     dimensions:
       - name: order_id
         type: number
-        sql: order_id
-        description: "Unique order ID"
-      
       - name: order_date
         type: time
-        sql: order_date
         granularity: day
-        description: "Date of order"
-      
       - name: status
         type: categorical
-        sql: status
-        description: "Order status"
-      
       - name: customer_id
         type: number
-        sql: customer_id
-        description: "Customer ID"
-    
     metrics:
       - name: total_revenue
-        agg: sum  # ← REMOVED "type: number" (not needed)
+        agg: sum
         sql: quantity * price
-        description: "Total revenue from orders"
-      
       - name: order_count
-        agg: count  # ← REMOVED "type: number" (not needed)
+        agg: count
         sql: order_id
-        description: "Number of orders"
-    
-    joins:  # ← CHANGED from "relationships" to "joins"
+    relationships:
       - name: customers
-        sql: orders.customer_id = customers.customer_id
-        relationship: many_to_one
+        type: many_to_one
+        foreign_key: customer_id
