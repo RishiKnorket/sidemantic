@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://sidemantic.com/schema.json
+models:
+  - name: customers
+    sql: |
+      select * from (values
+        (1, 'Alice Johnson', 'North', date '2024-01-01'),
+        (2, 'Bob Smith', 'South', date '2024-01-05'),
+        (3, 'Carol Davis', 'North', date '2024-01-10')
+      ) as t(id, name, region, signup_date)
+    primary_key: id
+    dimensions:
+      - name: region
+        type: categorical
+        sql: region
+
+  - name: orders
+    sql: |
+      select * from (values
+        (1, 1, 120.00, 'completed', timestamp '2024-01-15 10:12:00'),
+        (2, 2, 80.00,  'completed', timestamp '2024-01-20 09:30:00'),
+        (3, 1, 50.00,  'pending',   timestamp '2024-02-05 14:05:00'),
+        (4, 3, 200.00, 'completed', timestamp '2024-02-18 11:00:00')
+      ) as t(id, customer_id, amount, status, created_at)
+    primary_key: id
+    dimensions:
+      - name: id
+        type: numeric
+        sql: id
+      - name: status
+        type: categorical
+        sql: status
+      - name: created_at
+        type: time
+        sql: created_at
+        granularity: day
+    metrics:
+      - name: revenue
+        agg: sum
+        sql: amount
+      - name: order_count
+        agg: count
+    relationships:
+      - name: customers
+        type: many_to_one
+        foreign_key: customer_id
+      - name: order_items
+        type: one_to_many
+        foreign_key: order_id
+
+  - name: order_items
+    sql: |
+      select * from (values
+        (1, 1, 'SKU-1', 1),
+        (2, 1, 'SKU-2', 1),
+        (3, 1, 'SKU-2', 1),
+        (4, 2, 'SKU-2', 1),
+        (5, 4, 'SKU-3', 1),
+        (6, 4, 'SKU-4', 1)
+      ) as t(id, order_id, sku, quantity)
+    primary_key: id
+    dimensions:
+      - name: order_id
+        type: numeric
+        sql: order_id
+      - name: sku
+        type: categorical
+        sql: sku
+      - name: quantity
+        type: numeric
+        sql: quantity
+    relationships:
+      - name: orders
+        type: many_to_one
+        foreign_key: order_id
+
+metrics:
+  - name: avg_order_value
+    type: ratio
+    numerator: orders.revenue
+    denominator: orders.order_count
