@@ -11,7 +11,7 @@ cubes:
     type: string
   - name: signup_date
     sql: signup_date
-    type: time  # ← CHANGED from "string" to "time" for better handling
+    type: time
   - name: customer_id
     sql: customer_id
     type: string
@@ -22,9 +22,6 @@ cubes:
     sql: segment
     type: string
   measures:
-  - name: total_customers
+  - name: customer_count
     sql: customer_id
-    type: count  # ← ADDED a measure so it's not empty
-  - name: distinct_customers
-    sql: customer_id
-    type: count_distinct  # ← ADDED another measure
+    type: count
