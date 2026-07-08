@@ -2,32 +2,6 @@
 
 models:
   # ============================================
-  # CUSTOMERS MODEL
-  # ============================================
-  - name: customers
-    table: customers
-    primary_key: customer_id
-    description: "Customer master data"
-    
-    dimensions:
-      - name: customer_id
-        type: numeric
-        sql: customer_id
-      
-      - name: customer_name
-        type: categorical
-        sql: customer_name
-      
-      - name: region
-        type: categorical
-        sql: region
-      
-      - name: signup_date
-        type: time
-        sql: signup_date
-        granularity: day
-
-  # ============================================
   # ORDERS MODEL
   # ============================================
   - name: orders
@@ -35,16 +9,7 @@ models:
     primary_key: order_id
     description: "Customer orders"
     
-    relationships:
-      - name: customer
-        type: many_to_one
-        foreign_key: customer_id
-    
     dimensions:
-      - name: order_id
-        type: numeric
-        sql: order_id
-      
       - name: status
         type: categorical
         sql: status
@@ -53,25 +18,14 @@ models:
         type: time
         sql: created_at
         granularity: day
-      
-      - name: customer_tier
-        type: categorical
-        sql: |
-          CASE
-            WHEN total_amount > 1000 THEN 'premium'
-            WHEN total_amount > 100 THEN 'standard'
-            ELSE 'basic'
-          END
     
     metrics:
       - name: revenue
         agg: sum
         sql: amount
-        description: "Total order revenue"
       
       - name: order_count
         agg: count
-        description: "Number of orders"
       
       - name: avg_order_value
         agg: avg
@@ -81,89 +35,35 @@ models:
         agg: sum
         sql: amount
         filters: ["status = 'completed'"]
-      
-      - name: large_orders
-        agg: count
-        filters: ["amount > 1000"]
 
   # ============================================
-  # ORDER ITEMS MODEL
+  # CUSTOMERS MODEL
   # ============================================
-  - name: order_items
-    table: order_items
-    primary_key: id
-    description: "Order line items"
+  - name: customers
+    table: customers
+    primary_key: customer_id
+    description: "Customer master data"
     
     relationships:
-      - name: order
-        type: many_to_one
-        foreign_key: order_id
-    
-    dimensions:
-      - name: id
-        type: numeric
-        sql: id
-      
-      - name: order_id
-        type: numeric
-        sql: order_id
-      
-      - name: sku
-        type: categorical
-        sql: sku
-      
-      - name: quantity
-        type: numeric
-        sql: quantity
-      
-      - name: unit_price
-        type: numeric
-        sql: unit_price
-    
-    metrics:
-      - name: total_quantity
-        agg: sum
-        sql: quantity
-      
-      - name: line_items_count
-        agg: count
-
-  # ============================================
-  # PRODUCTS MODEL
-  # ============================================
-  - name: products
-    table: products
-    primary_key: product_id
-    description: "Product master data"
-    
-    relationships:
-      - name: order_items
+      - name: orders
         type: one_to_many
-        foreign_key: product_id
+        foreign_key: customer_id
     
     dimensions:
-      - name: product_id
-        type: numeric
-        sql: product_id
-      
-      - name: product_name
+      - name: region
         type: categorical
-        sql: product_name
+        sql: region
       
-      - name: category
-        type: categorical
-        sql: category
-      
-      - name: price
-        type: numeric
-        sql: price
+      - name: signup_date
+        type: time
+        sql: signup_date
+        granularity: day
 
 # ============================================
-# GLOBAL METRICS (Fixed)
+# GLOBAL METRICS
 # ============================================
 metrics:
   - name: avg_order_value
     type: ratio
     numerator: orders.revenue
     denominator: orders.order_count
-    description: "Average value per order"
