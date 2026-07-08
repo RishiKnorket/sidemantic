@@ -159,7 +159,7 @@ models:
         sql: price
 
 # ============================================
-# GLOBAL METRICS
+# GLOBAL METRICS (Fixed)
 # ============================================
 metrics:
   - name: avg_order_value
@@ -167,9 +167,3 @@ metrics:
     numerator: orders.revenue
     denominator: orders.order_count
     description: "Average value per order"
-  
-  - name: revenue_per_customer
-    type: ratio
-    numerator: orders.revenue
-    denominator: customers.count
-    description: "Revenue per customer"
